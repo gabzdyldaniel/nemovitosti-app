@@ -1,7 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import { Document } from 'mongoose';
-import { User } from '../users/user.schema';
+import { User } from '../user/user.schema';
+import { City } from '../city/city.schema';
+import { RealEstateAgency } from '../real-estate-agency/real-estate-agency.schema';
+import { Category } from '../category/category.schema';
 
 export type PropertyDocument = Property & Document;
 
@@ -17,13 +20,13 @@ export class Property {
   @Prop({ required: true })
   address: string;
   @Prop({ required: true, type: mongoose.Schema.Types.ObjectId, ref: 'City' })
-  city: any; // TODO
+  city: City;
   @Prop({ required: true, type: mongoose.Schema.Types.ObjectId, ref: 'Category' })
-  category: any; // TODO
+  category: Category;
   @Prop({ required: true })
   description: string;
   @Prop({ required: true, type: mongoose.Schema.Types.ObjectId, ref: 'RealEstateAgency' })
-  realEstateAgency: any; // TODO
+  realEstateAgency: RealEstateAgency;
   @Prop([{ required: true, type: mongoose.Schema.Types.ObjectId, ref: 'Contract' }])
   contracts: any; // TODO
 
