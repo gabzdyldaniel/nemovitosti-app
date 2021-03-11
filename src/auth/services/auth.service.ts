@@ -11,7 +11,7 @@ export class AuthService {
   }
 
   generateAccessToken(user: User): Observable<string> {
-    return from(this.jwtService.signAsync(user));
+    return from(this.jwtService.signAsync({ user }));
   }
 
   hashPassword(password: string): Observable<string> {

@@ -17,9 +17,9 @@ export class UsersService {
   loginAction({ email, password }) {
     return this._validateUser(email, password).pipe(
       switchMap((user: any) => {
-        if (user) {
+        if (user?._doc) {
           return this._authService.generateAccessToken(
-            user,
+            user._doc,
           );
         }
         throw new HttpException(
@@ -68,7 +68,7 @@ export class UsersService {
 
   private _findUserByEmail(email: string) {
     return from(
-      this.model.findOne({ email }),
+      this.model.findOne({ email }).select('+password'),
     );
   }
 
