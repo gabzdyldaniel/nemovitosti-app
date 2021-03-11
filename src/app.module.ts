@@ -2,9 +2,12 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { UsersModule } from './users/users.module';
+import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
+import { CategoryModule } from './category/category.module';
+import { CityModule } from './city/city.module';
+import { RealEstateAgencyModule } from './real-estate-agency/real-estate-agency.module';
 
 @Module({
   imports: [
@@ -21,7 +24,16 @@ import { ConfigModule } from '@nestjs/config';
         useFindAndModify: false,
       },
     ),
-    UsersModule,
+
+    // Categories
+    CategoryModule,
+    // Cities
+    CityModule,
+    // Real Estate Agencies
+    RealEstateAgencyModule,
+    // Users
+    UserModule,
+    // Auth
     AuthModule
   ],
   controllers: [AppController],

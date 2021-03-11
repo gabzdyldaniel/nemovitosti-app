@@ -7,7 +7,7 @@ import { map, switchMap } from 'rxjs/operators';
 import { AuthService } from '../auth/services/auth.service';
 
 @Injectable()
-export class UsersService {
+export class UserService {
   constructor(
     @InjectModel('User') private readonly model: Model<UserDocument>,
     private _authService: AuthService,
