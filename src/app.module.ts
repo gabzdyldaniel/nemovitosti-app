@@ -5,6 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
+import { CategoriesModule } from './categories/categories.module';
 
 @Module({
   imports: [
@@ -21,7 +22,12 @@ import { ConfigModule } from '@nestjs/config';
         useFindAndModify: false,
       },
     ),
+
+    // Categories
+    CategoriesModule,
+    // Users
     UsersModule,
+    // Auth
     AuthModule
   ],
   controllers: [AppController],
