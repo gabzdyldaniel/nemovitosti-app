@@ -8,6 +8,7 @@ import { ConfigModule } from '@nestjs/config';
 import { CategoryModule } from './category/category.module';
 import { CityModule } from './city/city.module';
 import { RealEstateAgencyModule } from './real-estate-agency/real-estate-agency.module';
+import { ContractModule } from './contract/contract.module';
 
 @Module({
   imports: [
@@ -24,7 +25,8 @@ import { RealEstateAgencyModule } from './real-estate-agency/real-estate-agency.
         useFindAndModify: false,
       },
     ),
-
+    // Contracts
+    ContractModule,
     // Categories
     CategoryModule,
     // Cities
