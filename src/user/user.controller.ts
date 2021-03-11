@@ -2,19 +2,19 @@ import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { Observable, of } from 'rxjs';
 import { User } from './user.schema';
 import { JwtAuthGuard } from '../auth/guards/auth.guard';
-import { UsersService } from './users.service';
+import { UserService } from './user.service';
 import { catchError, map } from 'rxjs/operators';
 
 @Controller('users')
-export class UsersController {
-  constructor(private _usersService: UsersService) {
+export class UserController {
+  constructor(private _userService: UserService) {
   }
 
   @Post('login')
   loginAction(
     @Body() credentials: { email: string, password: string }
   ): Observable<any> {
-    return this._usersService.loginAction(credentials).pipe(
+    return this._userService.loginAction(credentials).pipe(
       map((jwt: string) => {
         return { access_token: jwt }
       })
@@ -25,7 +25,7 @@ export class UsersController {
   registerAction(
     @Body() user: User
   ): Observable<any> {
-    return this._usersService.registerAction(user).pipe(
+    return this._userService.registerAction(user).pipe(
       catchError(err => of({error: err.message}))
     );
   }
@@ -35,7 +35,7 @@ export class UsersController {
   authenticateAction(
     @Req() req: any
   ): Observable<any> {
-    return this._usersService.authenticateAction(req).pipe(
+    return this._userService.authenticateAction(req).pipe(
       map((jwt: string) => {
         return { access_token: jwt }
       })
