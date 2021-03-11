@@ -5,7 +5,7 @@ import { JwtAuthGuard } from '../auth/guards/auth.guard';
 import { UserService } from './user.service';
 import { catchError, map } from 'rxjs/operators';
 
-@Controller('user')
+@Controller('users')
 export class UserController {
   constructor(private _userService: UserService) {
   }
