@@ -7,14 +7,14 @@ import { catchError, map } from 'rxjs/operators';
 
 @Controller('user')
 export class UserController {
-  constructor(private _usersService: UserService) {
+  constructor(private _userService: UserService) {
   }
 
   @Post('login')
   loginAction(
     @Body() credentials: { email: string, password: string }
   ): Observable<any> {
-    return this._usersService.loginAction(credentials).pipe(
+    return this._userService.loginAction(credentials).pipe(
       map((jwt: string) => {
         return { access_token: jwt }
       })
@@ -25,7 +25,7 @@ export class UserController {
   registerAction(
     @Body() user: User
   ): Observable<any> {
-    return this._usersService.registerAction(user).pipe(
+    return this._userService.registerAction(user).pipe(
       catchError(err => of({error: err.message}))
     );
   }
@@ -35,7 +35,7 @@ export class UserController {
   authenticateAction(
     @Req() req: any
   ): Observable<any> {
-    return this._usersService.authenticateAction(req).pipe(
+    return this._userService.authenticateAction(req).pipe(
       map((jwt: string) => {
         return { access_token: jwt }
       })
