@@ -5,7 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
-import { CategoriesModule } from './categories/categories.module';
+import { CategoryModule } from './categories/category.module';
 import { CityModule } from './city/city.module';
 
 @Module({
@@ -25,7 +25,7 @@ import { CityModule } from './city/city.module';
     ),
 
     // Categories
-    CategoriesModule,
+    CategoryModule,
     // Cities
     CityModule,
     // Users
