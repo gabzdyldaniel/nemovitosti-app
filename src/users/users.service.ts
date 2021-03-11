@@ -75,6 +75,13 @@ export class UsersService {
   private _validateUser(email: string, password: string) {
     return this._findUserByEmail(email).pipe(
       switchMap((user: User) => {
+        if (!user) {
+          throw new HttpException(
+            'User does not exist',
+            HttpStatus.CONFLICT,
+          );
+        }
+
         return this._authService.comparePasswords(
           password, user.password,
         ).pipe(
