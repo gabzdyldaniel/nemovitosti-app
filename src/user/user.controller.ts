@@ -2,12 +2,12 @@ import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { Observable, of } from 'rxjs';
 import { User } from './user.schema';
 import { JwtAuthGuard } from '../auth/guards/auth.guard';
-import { UsersService } from './users.service';
+import { UserService } from './user.service';
 import { catchError, map } from 'rxjs/operators';
 
-@Controller('users')
-export class UsersController {
-  constructor(private _usersService: UsersService) {
+@Controller('user')
+export class UserController {
+  constructor(private _usersService: UserService) {
   }
 
   @Post('login')
