@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { Issue, IssueSchema } from '../issue/issue.schema';
 
 export type ContractDocument = Contract & Document;
 
@@ -79,8 +80,23 @@ export class Contract {
         }
       }
     ],
+    default: []
   })
   payments: Payment[];
+
+  @Prop([IssueSchema])
+  issues: Issue[];
+
+  @Prop({
+    get: function() {
+      const now = Date.now();
+      const fromDate = this.fromDate.getTime();
+      const tillDate = this.tillDate.getTime();
+
+      return now >= fromDate && now <= tillDate;
+    }
+  })
+  active: boolean;
 }
 
 interface Tenant {
@@ -96,11 +112,5 @@ interface Payment {
   amount: number;
   note: string;
 }
-
-// TBD
-// interface Issue {
-//   issueType: string;
-//   description: string;
-// }
 
 export const ContractSchema = SchemaFactory.createForClass(Contract);
