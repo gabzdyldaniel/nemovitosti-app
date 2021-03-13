@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { RealEstateAgency, RealEstateAgencyDocument } from './real-estate-agency.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { from } from 'rxjs';
+import { IssueType, IssueTypeDocument } from './issue-type.schema';
 
 
 @Injectable()
-export class RealEstateAgencyService {
+export class IssueTypeService {
   constructor(
-    @InjectModel('RealEstateAgency') private readonly model: Model<RealEstateAgencyDocument>
+    @InjectModel('IssueType') private readonly model: Model<IssueTypeDocument>
   ) {
   }
 
@@ -18,9 +18,9 @@ export class RealEstateAgencyService {
     )
   }
 
-  createAction(realEstateAgency: RealEstateAgency) {
+  createAction(issueType: IssueType) {
     return from(
-      new this.model(realEstateAgency).save()
+      new this.model(issueType).save()
     )
   }
 
