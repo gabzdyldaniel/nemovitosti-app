@@ -10,6 +10,7 @@ import { CityModule } from './city/city.module';
 import { RealEstateAgencyModule } from './real-estate-agency/real-estate-agency.module';
 import { ContractModule } from './contract/contract.module';
 import { IssueTypeModule } from './issue-type/issue-type.module';
+import { CompanyModule } from './company/company.module';
 
 @Module({
   imports: [
@@ -28,6 +29,8 @@ import { IssueTypeModule } from './issue-type/issue-type.module';
     ),
     // Contracts
     ContractModule,
+    // Companies
+    CompanyModule,
     // Categories
     CategoryModule,
     // Cities
