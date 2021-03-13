@@ -19,25 +19,24 @@ export class RealEstateAgencyController {
   @Post()
   @UseGuards(JwtAuthGuard)
   createAction(
-    @Body() city: RealEstateAgency
+    @Body() realEstateAgency: RealEstateAgency
   ) {
-    return this._realEstateAgencyService.createAction(city)
+    return this._realEstateAgencyService.createAction(realEstateAgency)
   }
 
   @Put(':id')
   @UseGuards(JwtAuthGuard)
   updateAction(
     @Param('id') id: string,
-    @Body() city: RealEstateAgency
+    @Body() realEstateAgency: RealEstateAgency
   ) {
-    return this._realEstateAgencyService.updateAction(id, city)
+    return this._realEstateAgencyService.updateAction(id, realEstateAgency)
   }
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
   deleteAction(
     @Param('id') id: string,
-    @Body() city: RealEstateAgency
   ) {
     return this._realEstateAgencyService.deleteAction(id)
   }

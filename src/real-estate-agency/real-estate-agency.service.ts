@@ -18,9 +18,9 @@ export class RealEstateAgencyService {
     )
   }
 
-  createAction(city: RealEstateAgency) {
+  createAction(realEstateAgency: RealEstateAgency) {
     return from(
-      new this.model(city).save()
+      new this.model(realEstateAgency).save()
     )
   }
 
