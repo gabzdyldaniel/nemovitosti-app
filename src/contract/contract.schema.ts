@@ -26,7 +26,6 @@ export class Contract {
         }
       }
     ],
-    required: true,
     validate : {
       validator : function(array) {
         return Array.isArray(array) && array.length > 0;
@@ -45,8 +44,43 @@ export class Contract {
   @Prop({ type: Date, required: true })
   tillDate: Date;
 
+  @Prop({ type: Number, min: 1, max: 28 })
+  payday: number;
+
   @Prop()
   note: string;
+
+  @Prop({ type: Number, required: true })
+  rent: number;
+
+  @Prop({ type: Number, required: true })
+  energyDeposit: number;
+
+  @Prop({ type: Number, required: false, default: 0 })
+  additionalFees: number;
+
+  @Prop({
+    type: [
+      {
+        dueDate: {
+          type: Date,
+          required: [true, "Payment's dueDate is required!"]
+        },
+        paid: {
+          type: Boolean,
+          default: false
+        },
+        amount: {
+          type: Number,
+          required: [true, "Payment's amount is required!"]
+        },
+        note: {
+          type: String
+        }
+      }
+    ],
+  })
+  payments: Payment[];
 }
 
 interface Tenant {
@@ -55,5 +89,18 @@ interface Tenant {
   birthNumber: string;
   phoneNumber: string;
 }
+
+interface Payment {
+  dueDate: Date;
+  paid: boolean;
+  amount: number;
+  note: string;
+}
+
+// TBD
+// interface Issue {
+//   issueType: string;
+//   description: string;
+// }
 
 export const ContractSchema = SchemaFactory.createForClass(Contract);
