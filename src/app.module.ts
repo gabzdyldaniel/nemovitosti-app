@@ -7,7 +7,6 @@ import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { CategoryModule } from './category/category.module';
 import { CityModule } from './city/city.module';
-import { RealEstateAgencyModule } from './real-estate-agency/real-estate-agency.module';
 
 @Module({
   imports: [
@@ -29,8 +28,6 @@ import { RealEstateAgencyModule } from './real-estate-agency/real-estate-agency.
     CategoryModule,
     // Cities
     CityModule,
-    // Real Estate Agencies
-    RealEstateAgencyModule,
     // Users
     UserModule,
     // Auth

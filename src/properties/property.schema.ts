@@ -15,20 +15,24 @@ export class Property {
   */
   @Prop({ required: true, type: mongoose.Schema.Types.ObjectId, ref: 'User' })
   ownedBy: User;
+
   @Prop({ required: true })
   area: number;
+
   @Prop({ required: true })
   address: string;
+
   @Prop({ required: true, type: mongoose.Schema.Types.ObjectId, ref: 'City' })
   city: City;
+
   @Prop({ required: true, type: mongoose.Schema.Types.ObjectId, ref: 'Category' })
   category: Category;
+
   @Prop({ required: true })
   description: string;
-  @Prop({ required: true, type: mongoose.Schema.Types.ObjectId, ref: 'RealEstateAgency' })
-  realEstateAgency: RealEstateAgency;
+
   @Prop([{ required: true, type: mongoose.Schema.Types.ObjectId, ref: 'Contract' }])
-  contracts: any; // TODO
+  contracts: Contract; // TODO
 
   /*
     Getters
