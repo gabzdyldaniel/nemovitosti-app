@@ -10,8 +10,10 @@ export class User {
   */
   @Prop({ required: true, trim: true })
   name: string;
+
   @Prop({ required: true, trim: true })
   surname: string;
+
   @Prop({
     required: true,
     match: /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/,
@@ -23,8 +25,10 @@ export class User {
     },
   })
   email: string;
+
   @Prop({ required: true, select: false })
   password: string;
+
   @Prop({ required: true, trim: true })
   phoneNumber: string;
 
