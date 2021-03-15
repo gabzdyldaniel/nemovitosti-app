@@ -10,12 +10,25 @@ export class User {
   */
   @Prop({ required: true, trim: true })
   name: string;
+
   @Prop({ required: true, trim: true })
   surname: string;
-  @Prop({ required: true, trim: true })
+
+  @Prop({
+    required: true,
+    match: /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/,
+    validate: {
+      validator: function(v){
+        return this.model('User').findOne({ email: v }).then(user => !user)
+      },
+      message: props => `${props.value} is already taken!`
+    },
+  })
   email: string;
+
   @Prop({ required: true, select: false })
   password: string;
+
   @Prop({ required: true, trim: true })
   phoneNumber: string;
 

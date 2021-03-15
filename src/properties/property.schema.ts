@@ -3,8 +3,8 @@ import * as mongoose from 'mongoose';
 import { Document } from 'mongoose';
 import { User } from '../user/user.schema';
 import { City } from '../city/city.schema';
-import { RealEstateAgency } from '../real-estate-agency/real-estate-agency.schema';
 import { Category } from '../category/category.schema';
+import { Contract } from '../contract/contract.schema';
 
 export type PropertyDocument = Property & Document;
 
