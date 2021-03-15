@@ -1,9 +1,12 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import { IssueType } from '../issue-type/issue-type.schema';
+import { Company } from '../company/company.schema';
 
 @Schema({ toJSON: { getters: true } })
 export class Issue {
+  _id: mongoose.Types.ObjectId;
+
   @Prop({ required: true, type: mongoose.Schema.Types.ObjectId, ref: 'IssueType', autopopulate: true })
   issueType: IssueType;
 
@@ -17,7 +20,7 @@ export class Issue {
   repairDate: Date;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Company', autopopulate: true })
-  company: string;
+  company: Company;
 
   @Prop()
   price: number;
