@@ -4,17 +4,13 @@ import * as mongoose from 'mongoose';
 import { Issue, IssueSchema } from '../issue/issue.schema';
 import { Payment, PaymentSchema } from '../payment/payment.schema';
 import { Tenant, TenantSchema } from '../tenant/tenant.schema';
+import { BadRequestException, HttpException, HttpStatus } from '@nestjs/common';
 
 export type ContractDocument = Contract & Document;
 
 @Schema({ toJSON: { getters: true } })
 export class Contract {
-  @Prop({ type: mongoose.Schema.Types.ObjectId })
-  _id: string;
-
-  // TODO(dan) add propertyId once its created!!!
-  // @Prop({ required: true, type: mongoose.Schema.Types.ObjectId, ref: 'Property' })
-  // propertyId: string;
+  _id: mongoose.Types.ObjectId;
 
   @Prop({
     type: [TenantSchema],
@@ -70,3 +66,19 @@ export class Contract {
 }
 
 export const ContractSchema = SchemaFactory.createForClass(Contract);
+
+ContractSchema.pre<ContractDocument>('validate', function(next) {
+    this.model('Contract').findOne({
+      $or: [
+        { $and: [ { fromDate: { $lte: this.fromDate } }, { tillDate: { $gte: this.fromDate } } ] },
+        { $and: [ { tillDate: { $gte: this.tillDate } }, { fromDate: { $lte: this.fromDate } } ] }
+      ]
+    }).then(contract => {
+      contract ? next(
+        new HttpException(
+          'There is already a contract within these dates!',
+          HttpStatus.CONFLICT
+        )
+      ) : next();
+    });
+});

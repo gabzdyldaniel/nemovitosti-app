@@ -11,6 +11,7 @@ import { ContractModule } from './contract/contract.module';
 import { IssueTypeModule } from './issue-type/issue-type.module';
 import { CompanyModule } from './company/company.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { PropertyModule } from './property/property.module';
 
 @Module({
   imports: [
@@ -28,6 +29,8 @@ import { ScheduleModule } from '@nestjs/schedule';
         useFindAndModify: false,
       },
     ),
+    // Properties
+    PropertyModule,
     // Contracts
     ContractModule,
     // Companies

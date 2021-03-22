@@ -24,27 +24,41 @@ export class UserService {
         }
         throw new HttpException(
           'Wrong credentials',
-          HttpStatus.CONFLICT,
+          HttpStatus.UNAUTHORIZED,
         );
       }),
     );
   }
 
   registerAction(user: User) {
-    return this._authService.hashPassword(user.password).pipe(
-      switchMap(hash => {
-        return from(
-          new this.model({
-            email: user.email,
-            name: user.name,
-            surname: user.surname,
-            phoneNumber: user.phoneNumber,
-            password: hash,
-          }).save()
-        ).pipe(
-          map((user: User) => {
-            const { password, ...result } = user;
-            return result;
+    return this._mailExists(user.email).pipe(
+      switchMap((mailExists) => {
+        if (mailExists) {
+          throw new HttpException(
+            'Email is already in use',
+            HttpStatus.UNAUTHORIZED,
+          );
+        }
+
+        return this._authService.hashPassword(user.password).pipe(
+          switchMap(hash => {
+            return from(new this.model({
+              email: user.email,
+              name: user.name,
+              surname: user.surname,
+              phoneNumber: user.phoneNumber,
+              password: hash,
+            }).save()).pipe(
+              map((user: User) => {
+                const { password, ...result } = user;
+                return result;
+              }),
+              switchMap((user: any) => {
+                return this._authService.generateAccessToken(
+                  user._doc,
+                );
+              }),
+            );
           }),
         );
       }),
@@ -86,6 +100,12 @@ export class UserService {
           }),
         );
       }),
+    );
+  }
+
+  private _mailExists(email: string) {
+    return this._findUserByEmail(email).pipe(
+      map((user: User) => !!user),
     );
   }
 }

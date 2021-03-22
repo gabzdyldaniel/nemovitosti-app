@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import * as mongoose from 'mongoose';
@@ -7,13 +7,15 @@ import { from } from 'rxjs';
 import { Issue } from '../issue/issue.schema';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { Payment } from '../payment/payment.schema';
-import { first, map, tap } from 'rxjs/operators';
+import { first, map, switchMap, tap } from 'rxjs/operators';
 import { Tenant } from '../tenant/tenant.schema';
+import { PropertyDocument } from '../property/property.schema';
 
 @Injectable()
 export class ContractService {
   constructor(
     @InjectModel('Contract') private readonly model: Model<ContractDocument>,
+    @InjectModel('Property') private readonly propertyModel: Model<PropertyDocument>
   ) {
   }
 
@@ -23,9 +25,15 @@ export class ContractService {
     )
   }
 
-  createAction(contract: Contract, userId: string) {
+  createAction(contract: Contract, userId: string, propertyId: string) {
     return from(
       new this.model({ ...contract, ownedBy: userId }).save()
+    ).pipe(
+      switchMap((response) => {
+        return from(
+          this.propertyModel.findOneAndUpdate({ _id: propertyId }, { $push: { contracts: response._id } })
+        )
+      })
     )
   }
 
@@ -35,9 +43,15 @@ export class ContractService {
     );
   }
 
-  deleteAction(id: string) {
+  deleteAction(id: string, propertyId: string) {
     return from(
       this.model.findOneAndDelete({_id: id})
+    ).pipe(
+      switchMap(() => {
+        return from(
+          this.propertyModel.findOneAndUpdate({_id: propertyId}, { $pull: { contracts: { _id: mongoose.Types.ObjectId(id) } } })
+        )
+      })
     );
   }
 

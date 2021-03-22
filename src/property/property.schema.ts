@@ -14,7 +14,10 @@ export class Property {
     Properties
   */
   @Prop({ required: true, type: mongoose.Schema.Types.ObjectId, ref: 'User' })
-  ownedBy: User;
+  ownedBy: User | string;
+
+  @Prop({ required: true })
+  name: string;
 
   @Prop({ required: true })
   area: number;
@@ -22,21 +25,35 @@ export class Property {
   @Prop({ required: true })
   address: string;
 
-  @Prop({ required: true, type: mongoose.Schema.Types.ObjectId, ref: 'City' })
+  @Prop({ required: true, type: mongoose.Schema.Types.ObjectId, ref: 'City', autopopulate: true })
   city: City;
 
-  @Prop({ required: true, type: mongoose.Schema.Types.ObjectId, ref: 'Category' })
+  @Prop({ required: true, type: mongoose.Schema.Types.ObjectId, ref: 'Category', autopopulate: true })
   category: Category;
 
-  @Prop({ required: true })
+  @Prop()
   description: string;
 
-  @Prop([{ required: true, type: mongoose.Schema.Types.ObjectId, ref: 'Contract' }])
-  contracts: Contract; // TODO
+  @Prop([{ type: mongoose.Schema.Types.ObjectId, ref: 'Contract', autopopulate: true }])
+  contracts: Contract[];
 
   /*
     Getters
   */
+  @Prop({
+    get: function() {
+      return this.contracts.some(contract => contract.active);
+    }
+  })
+  isInhabited: boolean;
+
+  @Prop({
+    default: null,
+    get: function() {
+      return this.contracts.find(contract => contract.active) ?? null
+    }
+  })
+  activeContract: Contract;
 }
 
 export const PropertySchema = SchemaFactory.createForClass(Property);

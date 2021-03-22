@@ -21,13 +21,14 @@ export class ContractController {
     return this._contractService.listAction();
   }
 
-  @Post()
+  @Post(':propertyId')
   @UseGuards(JwtAuthGuard)
   createAction(
+    @Param('propertyId') propertyId: string,
     @Body() contract: Contract,
     @Req() req: any
   ) {
-    return this._contractService.createAction(contract, req.user._id).pipe(
+    return this._contractService.createAction(contract, req.user._id, propertyId).pipe(
       catchError(err => of({error: err.message}))
     );
   }
@@ -43,12 +44,13 @@ export class ContractController {
     );
   }
 
-  @Delete(':id')
+  @Delete(':id/:propertyId')
   @UseGuards(JwtAuthGuard)
   deleteAction(
     @Param('id') id: string,
+    @Param('propertyId') propertyId: string,
   ) {
-    return this._contractService.deleteAction(id).pipe(
+    return this._contractService.deleteAction(id, propertyId).pipe(
       catchError(err => of({error: err.message}))
     );
   }
