@@ -5,6 +5,8 @@ import { ContractSchema } from './contract.schema';
 import { ContractController } from './contract.controller';
 import { ContractService } from './contract.service';
 import { PaymentSchema } from '../payment/payment.schema';
+import { PropertySchema } from '../property/property.schema';
+import { PropertyModule } from '../property/property.module';
 
 @Module({
   imports: [
@@ -14,9 +16,13 @@ import { PaymentSchema } from '../payment/payment.schema';
           name: 'Contract',
           schema: ContractSchema
         },
+        {
+          name: 'Property',
+          schema: PropertySchema
+        }
       ]
     ),
-    AuthModule
+    AuthModule,
   ],
   controllers: [ContractController],
   providers: [ContractService],
