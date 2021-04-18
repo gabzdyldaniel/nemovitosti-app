@@ -27,7 +27,7 @@ export class ContractService {
 
   createAction(contract: Contract, userId: string, propertyId: string) {
     return from(
-      new this.model({ ...contract, ownedBy: userId }).save()
+      new this.model({ ...contract, property: propertyId, ownedBy: userId }).save()
     ).pipe(
       switchMap((response) => {
         return from(
@@ -98,7 +98,7 @@ export class ContractService {
   }
 
   @Cron(CronExpression.EVERY_1ST_DAY_OF_MONTH_AT_MIDNIGHT)
-  async addMonthlyPayment() {
+  addMonthlyPayment() {
     from(
       this.model.find()
     ).pipe(

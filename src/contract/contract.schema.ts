@@ -1,16 +1,20 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
 import * as mongoose from 'mongoose';
+import { Document } from 'mongoose';
 import { Issue, IssueSchema } from '../issue/issue.schema';
 import { Payment, PaymentSchema } from '../payment/payment.schema';
 import { Tenant, TenantSchema } from '../tenant/tenant.schema';
-import { BadRequestException, HttpException, HttpStatus } from '@nestjs/common';
+import { HttpException, HttpStatus } from '@nestjs/common';
+import { Property } from '../property/property.schema';
 
 export type ContractDocument = Contract & Document;
 
 @Schema({ toJSON: { getters: true } })
 export class Contract {
   _id: mongoose.Types.ObjectId;
+
+  @Prop({ required: true, type: mongoose.Schema.Types.ObjectId, ref: 'Property' })
+  property: Property | string;
 
   @Prop({
     type: [TenantSchema],
@@ -70,8 +74,8 @@ export const ContractSchema = SchemaFactory.createForClass(Contract);
 ContractSchema.pre<ContractDocument>('validate', function(next) {
     this.model('Contract').findOne({
       $or: [
-        { $and: [ { fromDate: { $lte: this.fromDate } }, { tillDate: { $gte: this.fromDate } } ] },
-        { $and: [ { tillDate: { $gte: this.tillDate } }, { fromDate: { $lte: this.fromDate } } ] }
+        { $and: [ { property: this.property }, { fromDate: { $lte: this.fromDate } }, { tillDate: { $gte: this.fromDate } } ] },
+        { $and: [ { property: this.property }, { tillDate: { $gte: this.tillDate } }, { fromDate: { $lte: this.fromDate } } ] }
       ]
     }).then(contract => {
       contract ? next(

@@ -131,6 +131,8 @@ export class ContractController {
     );
   }
 
+  // TODO delete payment
+
   @Patch(':id/payments/:paymentId')
   @UseGuards(JwtAuthGuard)
   patchPaymentPaidAction(
