@@ -65,9 +65,9 @@ export class UserService {
     );
   }
 
-  authenticateAction(req: any) {
+  authenticateAction(user: any) {
     return this._authService.generateAccessToken(
-      req.user,
+      user,
     );
   }
 

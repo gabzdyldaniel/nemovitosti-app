@@ -37,7 +37,7 @@ export class UserController {
   authenticateAction(
     @Req() req: any
   ): Observable<any> {
-    return this._userService.authenticateAction(req).pipe(
+    return this._userService.authenticateAction(req.user).pipe(
       map((jwt: string) => {
         return { accessToken: jwt }
       })
